@@ -1,0 +1,33 @@
+{
+  "name": "booking-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
+    "axios": "^1.13.2",
+    "dayjs": "^1.11.19",
+    "next": "16.0.8",
+    "react": "19.2.1",
+    "react-calendar": "^6.0.0",
+    "react-datepicker": "^9.0.0",
+    "react-dom": "19.2.1",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.8",
+    "tailwindcss": "^4"
+  }
+}
