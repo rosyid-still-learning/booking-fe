@@ -1,9 +1,7 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import api from "@/lib/axios";
 
 export default function EditRoomPage() {
   const { id } = useParams();
@@ -23,10 +21,20 @@ export default function EditRoomPage() {
 
   // ================= FETCH DATA =================
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const res = await api.get(`/admin/rooms/${id}`);
-        const data = res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/admin/rooms/${id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        if (!res.ok) throw new Error("Gagal memuat data ruangan");
+
+        const data = await res.json();
 
         setName(data.name || "");
         setLocation(data.location || "");
@@ -39,51 +47,74 @@ export default function EditRoomPage() {
             : data.facilities || ""
         );
       } catch (err) {
-        console.error(err);
-        setError("Gagal memuat data ruangan");
+        setError(err.message);
       } finally {
         setLoading(false);
       }
+    };
+
+    fetchData();
+  }, [id]);
+
+  // ================= CLOUDINARY UPLOAD =================
+  const uploadToCloudinary = async (file) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", "rooms_unsigned");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dgkajfw1b/image/upload",
+      {
+        method: "POST",
+        body: fd,
+      }
+    );
+
+    const data = await res.json();
+    if (!data.secure_url) {
+      throw new Error("Upload gambar ke Cloudinary gagal");
     }
 
-    if (id) fetchData();
-  }, [id]);
+    return data.secure_url;
+  };
 
   // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("location", location);
-    formData.append("capacity", capacity);
-    formData.append("facilities", facilities);
-    formData.append("category", category);
-    formData.append("description", description);
-
-    if (image) {
-      formData.append("image", image);
-    }
-
     try {
-     await api.post(`/admin/rooms/${id}`, formData, {
-  headers: {
-    "X-HTTP-Method-Override": "PUT",
-    "Content-Type": "multipart/form-data",
-  },
-});
+      let imageUrl = null;
+      if (image) {
+        imageUrl = await uploadToCloudinary(image);
+      }
 
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/rooms/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            location,
+            capacity,
+            facilities,
+            category,
+            description,
+            image: imageUrl,
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Gagal update ruangan");
 
       toast.success("Ruangan berhasil diperbarui");
-
-      setTimeout(() => {
-        router.push("/admin/rooms");
-      }, 1200);
+      setTimeout(() => router.push("/admin/rooms"), 1200);
     } catch (err) {
       console.error(err);
-      toast.error(
-        err?.response?.data?.message || "Gagal update ruangan"
-      );
+      toast.error(err.message || "Terjadi kesalahan");
     }
   };
 
@@ -93,7 +124,7 @@ export default function EditRoomPage() {
 
   return (
     <div className="p-6">
-      {/* ===== BACK ===== */}
+      {/* ===== TOMBOL KEMBALI (KIRI ATAS) ===== */}
       <button
         onClick={() => router.push("/admin/rooms")}
         className="mb-4 text-sm text-gray-600 hover:underline"
@@ -101,6 +132,7 @@ export default function EditRoomPage() {
         &larr; Kembali
       </button>
 
+      {/* ===== FORM (UI ASLI KAMU, TIDAK DIUBAH) ===== */}
       <div className="max-w-xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Edit Ruangan</h1>
 
@@ -179,7 +211,7 @@ export default function EditRoomPage() {
             />
           </div>
 
-          {/* IMAGE */}
+          {/* UPLOAD GAMBAR */}
           <div>
             <label className="block font-semibold mb-2">
               Ganti Gambar
@@ -197,7 +229,7 @@ export default function EditRoomPage() {
               type="file"
               accept="image/*"
               onChange={(e) =>
-                setImage(e.target.files?.[0] || null)
+                setImage(e.target.files && e.target.files[0])
               }
               className="hidden"
             />
@@ -205,7 +237,9 @@ export default function EditRoomPage() {
             {image && (
               <p className="mt-2 text-sm text-gray-600">
                 File dipilih:{" "}
-                <span className="font-medium">{image.name}</span>
+                <span className="font-medium">
+                  {image.name}
+                </span>
               </p>
             )}
           </div>

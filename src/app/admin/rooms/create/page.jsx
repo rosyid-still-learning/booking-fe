@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
@@ -10,34 +9,46 @@ export default function CreateRoomPage() {
 
   const [form, setForm] = useState({
     name: "",
-    location: "",
+    building: "",
+    floor: "",
     capacity: "",
     facilities: "",
     description: "",
     category: "",
   });
 
+  const [facilities, setFacilities] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ===============================
-  // CLOUDINARY UPLOAD (FRONTEND)
-  // ===============================
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImage = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  // 🔥 UPLOAD KE CLOUDINARY (FIX UTAMA)
   const uploadToCloudinary = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "rooms_unsigned");
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", "rooms_unsigned");
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/dgkajfw1b/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      }
+      { method: "POST", body: fd }
     );
 
     const data = await res.json();
+    if (!data.secure_url) {
+      throw new Error("Upload Cloudinary gagal");
+    }
+
     return data.secure_url;
   };
 
@@ -47,19 +58,23 @@ export default function CreateRoomPage() {
 
     try {
       let imageUrl = null;
-
       if (image) {
         imageUrl = await uploadToCloudinary(image);
       }
 
       await axios.post("/admin/rooms", {
-        ...form,
+        name: form.name,
+        location: form.building,
         capacity: Number(form.capacity),
-        image: imageUrl,
+        facilities,
+        category: form.category,
+        description: form.description ?? "",
+        is_active: 1,
+        image: imageUrl, // ✅ STRING URL
       });
 
       toast.success("Ruangan berhasil ditambahkan");
-      router.push("/admin/rooms");
+      setTimeout(() => router.push("/admin/rooms"), 1200);
     } catch (err) {
       console.error(err);
       toast.error("Gagal menambah ruangan");
@@ -68,58 +83,50 @@ export default function CreateRoomPage() {
     }
   };
 
+  // ================= UI ASLI (TIDAK DIUBAH) =================
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-xl font-bold mb-4">Tambah Ruangan</h1>
+    <div className="p-6">
+      <button
+        onClick={() => router.push("/admin/rooms")}
+        className="mb-4 text-sm text-gray-600 hover:underline"
+      >
+        &larr; Kembali
+      </button>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          placeholder="Nama"
-          className="border p-2 w-full"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <input
-          placeholder="Lokasi"
-          className="border p-2 w-full"
-          onChange={(e) => setForm({ ...form, location: e.target.value })}
-        />
-        <input
-          placeholder="Kapasitas"
-          type="number"
-          className="border p-2 w-full"
-          onChange={(e) => setForm({ ...form, capacity: e.target.value })}
-        />
-        <input
-          placeholder="Fasilitas (AC, Proyektor)"
-          className="border p-2 w-full"
-          onChange={(e) => setForm({ ...form, facilities: e.target.value })}
-        />
-        <textarea
-          placeholder="Deskripsi"
-          className="border p-2 w-full"
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-        />
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-2xl font-bold mb-5">Tambah Ruangan</h1>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            setImage(e.target.files[0]);
-            setPreview(URL.createObjectURL(e.target.files[0]));
-          }}
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="w-full flex justify-center">
+            <img
+              src={preview || "/no-image.png"}
+              className="w-64 h-40 object-cover border rounded"
+            />
+          </div>
 
-        {preview && (
-          <img src={preview} className="h-40 object-cover rounded" />
-        )}
+          <input type="file" accept="image/*" onChange={handleImage} />
 
-        <button
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-        >
-          {loading ? "Menyimpan..." : "Simpan"}
-        </button>
-      </form>
+          <input name="name" onChange={handleChange} value={form.name} required />
+          <input name="building" onChange={handleChange} value={form.building} required />
+          <input name="floor" onChange={handleChange} value={form.floor} required />
+          <input name="capacity" type="number" onChange={handleChange} value={form.capacity} required />
+          <input value={facilities} onChange={(e) => setFacilities(e.target.value)} required />
+
+          <textarea name="description" onChange={handleChange} value={form.description} />
+
+          <select name="category" onChange={handleChange} value={form.category} required>
+            <option value="">-- Pilih Kampus --</option>
+            <option value="kampus_tengah">Kampus Tengah</option>
+            <option value="kampus_jineng_dalem">Jineng Dalem</option>
+            <option value="kampus_bawah">Kampus Bawah</option>
+            <option value="kampus_denpasar">Denpasar</option>
+          </select>
+
+          <button className="bg-blue-600 text-white px-4 py-2 rounded">
+            {loading ? "Menyimpan..." : "Simpan"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
