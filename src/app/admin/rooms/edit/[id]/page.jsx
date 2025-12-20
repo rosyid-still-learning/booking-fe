@@ -66,11 +66,13 @@ export default function EditRoomPage() {
     }
 
     try {
-      await api.post(`/admin/rooms/${id}`, formData, {
-        headers: {
-          "X-HTTP-Method-Override": "PUT",
-        },
-      });
+     await api.post(`/admin/rooms/${id}`, formData, {
+  headers: {
+    "X-HTTP-Method-Override": "PUT",
+    "Content-Type": "multipart/form-data",
+  },
+});
+
 
       toast.success("Ruangan berhasil diperbarui");
 
