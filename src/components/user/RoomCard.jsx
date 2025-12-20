@@ -3,21 +3,12 @@
 import Link from "next/link";
 
 export default function RoomCard({ room }) {
-  // ===== AMBIL 1 FOTO SAJA =====
-  let imageSrc = null;
-
-  if (Array.isArray(room.image_url)) {
-    imageSrc = room.image_url[0]; // ambil foto pertama
-  } else if (typeof room.image_url === "string") {
-    imageSrc = room.image_url.split(",")[0]; // jaga-jaga kalau dipisah koma
-  }
-
   return (
     <div className="border rounded-lg shadow p-4 flex flex-col bg-white">
       {/* FOTO */}
-      {imageSrc && (
+      {room.image_url && (
         <img
-          src={imageSrc}
+          src={room.image_url}
           alt={`Foto ruangan ${room.name}`}
           className="w-full h-40 object-cover rounded mb-3"
         />
