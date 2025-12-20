@@ -24,7 +24,8 @@ export default function RoomCard({ room }) {
 
       {/* CATEGORY */}
       {room.category && (
-        <span className="mt-2 w-fit inline-block text-xs font-medium bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+        <span className="mt-2 w-fit inline-block text-xs font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+
           {room.category
             .replaceAll("_", " ")
             .replace(/\b\w/g, (char) => char.toUpperCase())}
