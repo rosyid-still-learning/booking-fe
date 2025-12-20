@@ -83,9 +83,10 @@ export default function RoomsPage() {
     <div className="px-6 py-8 max-w-7xl mx-auto">
       {/* ===== HEADER ===== */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold text-gray-900">
   Daftar Ruangan
 </h1>
+
 
         <p className="text-gray-500 mt-1">
           Cari dan filter ruangan sesuai kebutuhan
