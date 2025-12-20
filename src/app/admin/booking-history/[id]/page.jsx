@@ -119,7 +119,7 @@ export default function BookingHistoryDetail() {
         {booking.attachment && (
           <div className="mt-6">
             <a
-              href={`${STORAGE_BASE}/storage/${booking.attachment}`}
+              href={booking.attachment_url}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"

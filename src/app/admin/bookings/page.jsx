@@ -177,12 +177,7 @@ export default function AdminBookingsPage() {
 
               {b.attachment && (
                 <p className="mt-3">
-                  <a
-                    href={`${STORAGE_BASE}/storage/${b.attachment}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline text-sm"
-                  >
+                   <a href={b.attachment_url}>
                     📎 Lihat File Pendukung
                   </a>
                 </p>
