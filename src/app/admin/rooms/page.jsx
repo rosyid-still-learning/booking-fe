@@ -167,17 +167,11 @@ export default function AdminRoomsPage() {
               className="border rounded-lg shadow-md p-4 flex flex-col"
             >
               <img
-                src={
-                  room.image
-                    ? `${process.env.NEXT_PUBLIC_API_URL.replace(
-                        "/api",
-                        ""
-                      )}/storage/${room.image}`
-                    : "/no-image.png"
-                }
-                alt={room.name}
-                className="w-full h-40 object-cover rounded mb-3"
-              />
+  src={room.image || "https://via.placeholder.com/400x250?text=No+Image"}
+  alt={room.name}
+  className="w-full h-40 object-cover rounded mb-3"
+/>
+
 
               <h2 className="text-lg font-bold">{room.name}</h2>
               <p className="text-gray-600 text-sm">{room.location}</p>
