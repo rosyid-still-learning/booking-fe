@@ -167,10 +167,11 @@ export default function AdminRoomsPage() {
               className="border rounded-lg shadow-md p-4 flex flex-col"
             >
               <img
-  src={room.image || "https://via.placeholder.com/400x250?text=No+Image"}
+  src={room.image_url || "https://via.placeholder.com/400x250?text=No+Image"}
   alt={room.name}
-  className="w-full h-40 object-cover rounded mb-3"
+  className="w-full h-40 object-cover rounded"
 />
+
 
 
               <h2 className="text-lg font-bold">{room.name}</h2>
