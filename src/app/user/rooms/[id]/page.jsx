@@ -60,17 +60,15 @@ export default function RoomDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ================= LEFT CONTENT ================= */}
         <div className="lg:col-span-2 bg-white rounded shadow p-6">
+          
           {room.image && (
-            <img
-              src={`${process.env.NEXT_PUBLIC_API_URL.replace(
-  "/api",
-  ""
-)}/storage/${room.image}`}
+  <img
+    src={room.image}
+    alt={room.name}
+    className="w-full h-64 object-cover rounded mb-4"
+  />
+)}
 
-              alt={room.name}
-              className="w-full h-64 object-cover rounded mb-4"
-            />
-          )}
 
           <h1 className="text-2xl font-bold">{room.name}</h1>
           <p className="text-gray-600">{room.location}</p>
