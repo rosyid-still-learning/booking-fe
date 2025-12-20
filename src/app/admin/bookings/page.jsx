@@ -177,9 +177,10 @@ export default function AdminBookingsPage() {
 
               {b.attachment && (
                 <p className="mt-3">
-                   <a href={b.attachment_url}>
-                    📎 Lihat File Pendukung
-                  </a>
+                   <a href={booking.attachment_url} target="_blank">
+  📎 Lihat File Pendukung
+</a>
+
                 </p>
               )}
 
