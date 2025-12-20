@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: false, // ⬅️ PAKSA MATI
-  },
+  reactStrictMode: true,
 };
 
 export default nextConfig;
