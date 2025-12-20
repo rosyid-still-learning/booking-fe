@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 // 🔥 FORMAT TANGGAL + JAM AM/PM TANPA DETIK
 function formatDateTime(datetime) {
-  if (!datetime) return "-";
+  if (!datetime) return { tanggal: "-", jam: "-" };
 
   const date = new Date(datetime);
 
@@ -25,10 +25,6 @@ function formatDateTime(datetime) {
   return { tanggal, jam };
 }
 
-// 🔥 BASE URL STORAGE (TANPA /api)
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
-const STORAGE_BASE = API_BASE?.replace("/api", "");
-
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +32,6 @@ export default function AdminBookingsPage() {
   async function fetchBookings() {
     try {
       const res = await api.get("/admin/bookings");
-
       const list = Array.isArray(res.data)
         ? res.data
         : res.data?.data || [];
@@ -153,8 +148,7 @@ export default function AdminBookingsPage() {
               </h2>
 
               <p className="text-sm text-gray-600 mt-1">
-                Pemohon:{" "}
-                <strong>{b.user?.name || "-"}</strong>
+                Pemohon: <strong>{b.user?.name || "-"}</strong>
               </p>
 
               <p className="mt-3">
@@ -166,7 +160,7 @@ export default function AdminBookingsPage() {
               <p className="mt-2">
                 <strong>Detail Kegiatan:</strong>
                 <br />
-                {b.purpose}
+                {b.purpose || "-"}
               </p>
 
               <div className="mt-4 bg-gray-50 border rounded-lg p-3 text-sm">
@@ -175,12 +169,17 @@ export default function AdminBookingsPage() {
                 <p>🕒 {start.jam} – {end.jam}</p>
               </div>
 
-              {b.attachment && (
+              {/* 🔥 FIX UTAMA ADA DI SINI */}
+              {b.attachment_url && (
                 <p className="mt-3">
-                   <a href={booking.attachment_url} target="_blank">
-  📎 Lihat File Pendukung
-</a>
-
+                  <a
+                    href={b.attachment_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    📎 Lihat File Pendukung
+                  </a>
                 </p>
               )}
 
