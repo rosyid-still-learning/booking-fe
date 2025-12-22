@@ -17,28 +17,30 @@ export default function CreateRoomPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("location", location);
-    formData.append("capacity", capacity);
-    formData.append("facilities", facilities);
-    formData.append("category", category);
-    formData.append("description", description);
-    if (image) formData.append("image", image);
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("location", location);
+  formData.append("capacity", capacity);
+  formData.append("facilities", facilities);
+  formData.append("category_id", category); // 🔥 FIX
+  formData.append("description", description);
+  if (image) formData.append("image", image);
 
-    setLoading(true);
-    try {
-      await api.post("/admin/rooms", formData);
-      toast.success("Ruangan berhasil ditambahkan");
-      router.push("/admin/rooms");
-    } catch (err) {
-      toast.error("Gagal menambah ruangan");
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    await api.post("/admin/rooms", formData);
+    toast.success("Ruangan berhasil ditambahkan");
+    router.push("/admin/rooms");
+  } catch (err) {
+    console.error(err);
+    toast.error("Gagal menambah ruangan");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="p-6">
