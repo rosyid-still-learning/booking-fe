@@ -19,14 +19,24 @@ export default function CreateRoomPage() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
+  if (!image) {
+    toast.error("Foto ruangan wajib diisi");
+    return;
+  }
+
   const formData = new FormData();
   formData.append("name", name);
   formData.append("location", location);
-  formData.append("capacity", capacity);
-  formData.append("facilities", facilities);
-  formData.append("category_id", category); // 🔥 FIX
+  formData.append("capacity", Number(capacity));
+  formData.append("category_id", Number(category));
   formData.append("description", description);
-  if (image) formData.append("image", image);
+
+  // facilities jadi array
+  facilities.split(",").forEach(f =>
+    formData.append("facilities[]", f.trim())
+  );
+
+  formData.append("image", image);
 
   setLoading(true);
   try {
@@ -34,12 +44,13 @@ export default function CreateRoomPage() {
     toast.success("Ruangan berhasil ditambahkan");
     router.push("/admin/rooms");
   } catch (err) {
-    console.error(err);
+    console.error(err?.response?.data || err);
     toast.error("Gagal menambah ruangan");
   } finally {
     setLoading(false);
   }
 };
+
 
 
   return (
