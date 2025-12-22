@@ -100,17 +100,18 @@ export default function CreateRoomPage() {
           <div>
             <label className="font-semibold">Kategori</label>
             <select
-              className="w-full border p-2 rounded"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="">-- Pilih Kampus --</option>
-              <option value="kampus_tengah">Kampus Tengah</option>
-              <option value="kampus_jineng_dalem">Kampus Jineng Dalem</option>
-              <option value="kampus_bawah">Kampus Bawah</option>
-              <option value="kampus_denpasar">Kampus Denpasar</option>
-            </select>
+  className="w-full border p-2 rounded"
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  required
+>
+  <option value="">-- Pilih Kampus --</option>
+  <option value="1">Kampus Tengah</option>
+  <option value="2">Kampus Jineng Dalem</option>
+  <option value="3">Kampus Bawah</option>
+  <option value="4">Kampus Denpasar</option>
+</select>
+
           </div>
 
           <div>
