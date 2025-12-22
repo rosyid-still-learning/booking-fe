@@ -24,23 +24,23 @@ export default function CreateRoomPage() {
     return;
   }
 
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("location", location);
-  formData.append("capacity", Number(capacity));
-  formData.append("category_id", Number(category));
-  formData.append("description", description);
-
-  // facilities jadi array
-  facilities.split(",").forEach(f =>
-    formData.append("facilities[]", f.trim())
-  );
-
-  formData.append("image", image);
-
   setLoading(true);
+
   try {
-    await api.post("/admin/rooms", formData);
+    // 🔥 UPLOAD KE CLOUDINARY
+    const imageUrl = await uploadToCloudinary(image);
+
+    // 🔥 KIRIM JSON, BUKAN FORM DATA
+    await api.post("/admin/rooms", {
+      name,
+      location,
+      capacity: Number(capacity),
+      facilities: facilities.split(",").map(f => f.trim()),
+      category: category, // SESUAI EDIT
+      description,
+      image: imageUrl, // STRING URL
+    });
+
     toast.success("Ruangan berhasil ditambahkan");
     router.push("/admin/rooms");
   } catch (err) {
@@ -49,6 +49,29 @@ export default function CreateRoomPage() {
   } finally {
     setLoading(false);
   }
+};
+
+
+const uploadToCloudinary = async (file) => {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("upload_preset", "rooms_unsigned");
+
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/dgkajfw1b/image/upload",
+    {
+      method: "POST",
+      body: fd,
+    }
+  );
+
+  const data = await res.json();
+
+  if (!data.secure_url) {
+    throw new Error("Upload gambar ke Cloudinary gagal");
+  }
+
+  return data.secure_url;
 };
 
 
