@@ -1,6 +1,7 @@
 "use client";
 
 import SidebarUser from "@/components/user/SidebarUser";
+import MobileSidebar from "@/components/MobileSidebar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import useAuthStore from "@/store/authStore";
@@ -11,6 +12,7 @@ export default function UserLayout({ children }) {
   const router = useRouter();
   const { loadUser, user } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // cek login
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function UserLayout({ children }) {
     }
   }, []);
 
-  // cek role
+  // cek role user
   useEffect(() => {
     if (!user) return;
 
@@ -37,13 +39,30 @@ export default function UserLayout({ children }) {
 
   return (
     <div className="flex min-h-screen">
-      {/* SIDEBAR */}
-      <SidebarUser />
+      {/* SIDEBAR DESKTOP (ASLI) */}
+      <div className="hidden md:block">
+        <SidebarUser />
+      </div>
+
+      {/* SIDEBAR MOBILE (DRAWER, ASLI) */}
+      <MobileSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      >
+        <SidebarUser />
+      </MobileSidebar>
 
       {/* KONTEN */}
-      <main className="ml-64 flex-1 bg-gray-50 flex flex-col">
+      <main className="flex-1 bg-gray-50 flex flex-col md:ml-64">
         {/* HEADER */}
-        <Header />
+        <Header>
+          <button
+            className="md:hidden text-xl"
+            onClick={() => setSidebarOpen(true)}
+          >
+            ☰
+          </button>
+        </Header>
 
         {/* PAGE CONTENT */}
         <div className="p-6 flex-1">

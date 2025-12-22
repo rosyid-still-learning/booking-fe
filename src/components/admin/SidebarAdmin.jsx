@@ -72,7 +72,6 @@ export default function SidebarAdmin() {
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-64 bg-slate-900 text-white z-50 flex flex-col p-5">
-      
       {/* LOGO + TITLE */}
       <div className="flex items-center gap-3 mb-8">
         <Image
@@ -89,11 +88,17 @@ export default function SidebarAdmin() {
 
       {/* MENU */}
       <nav className="flex-1 flex flex-col gap-1">
-        <Link href="/admin/dashboard" className={linkClass("/admin/dashboard")}>
+        <Link
+          href="/admin/dashboard"
+          className={linkClass("/admin/dashboard")}
+        >
           <FiHome /> Dashboard
         </Link>
 
-        <Link href="/admin/rooms" className={linkClass("/admin/rooms")}>
+        <Link
+          href="/admin/rooms"
+          className={linkClass("/admin/rooms")}
+        >
           <FiList /> Kelola Ruangan
         </Link>
 

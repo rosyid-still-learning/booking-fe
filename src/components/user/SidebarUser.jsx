@@ -15,7 +15,11 @@ export default function SidebarUser() {
   const menu = [
     { name: "Dashboard", href: "/user/dashboard", icon: <FiHome /> },
     { name: "Daftar Ruangan", href: "/user/rooms", icon: <FiList /> },
-    { name: "Status Booking Saya", href: "/user/my-booking", icon: <FiBookmark /> },
+    {
+      name: "Status Booking Saya",
+      href: "/user/my-booking",
+      icon: <FiBookmark />,
+    },
   ];
 
   const handleLogout = () => {
@@ -47,7 +51,6 @@ export default function SidebarUser() {
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-64 bg-slate-900 text-white z-50 flex flex-col p-5">
-      
       {/* LOGO + TITLE */}
       <div className="flex items-center gap-3 mb-8">
         <Image
