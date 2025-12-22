@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 import dayjs from "dayjs";
 
-export default function Header() {
+export default function Header({ children }) {
   const pathname = usePathname();
   const { user } = useAuthStore();
 
@@ -17,12 +17,14 @@ export default function Header() {
 
   return (
     <header className="h-14 bg-white border-b flex items-center justify-between px-6">
-      {/* LEFT - BREADCRUMB */}
-      <div className="text-sm text-gray-600">
-        {breadcrumbs.join(" / ")}
+      
+      {/* LEFT - HAMBURGER (MOBILE) + BREADCRUMB */}
+      <div className="flex items-center gap-3 text-sm text-gray-600">
+        {children} {/* ⬅️ INI KUNCI UTAMA */}
+        <span>{breadcrumbs.join(" / ")}</span>
       </div>
 
-      {/* RIGHT - USER INFO (NO AVATAR) */}
+      {/* RIGHT - USER INFO */}
       <div className="text-right leading-tight">
         <p className="text-sm font-medium text-gray-800">
           {user?.name}
