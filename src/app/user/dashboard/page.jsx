@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function UserDashboard() {
 
   return (
     <div className="p-6 space-y-8">
+
       {/* HEADER */}
       <div>
         <h1 className="text-3xl font-bold text-gray-800">
@@ -39,30 +41,46 @@ export default function UserDashboard() {
         </p>
       </div>
 
-      {/* FEATURE CARDS */}
+      {/* QUICK ACTION */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+
+        <Link
+          href="/user/rooms"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             📋 Daftar Ruangan
           </h3>
           <p className="text-sm text-gray-600">
             Lihat informasi ruangan secara detail dan
             ketersediaan ruangan.
           </p>
-        </div>
+        </Link>
 
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+        <Link
+          href="/user/rooms"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             📝 Ajukan Booking
           </h3>
           <p className="text-sm text-gray-600">
             Ajukan pemesanan ruangan sesuai jadwal
             yang diinginkan.
           </p>
-        </div>
+        </Link>
 
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+        <Link
+          href="/user/my-booking"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             ⏳ Status Booking
           </h3>
           <p className="text-sm text-gray-600">
@@ -70,7 +88,8 @@ export default function UserDashboard() {
             dan lakukan pembatalan maksimal 24 jam sebelum
             waktu mulai.
           </p>
-        </div>
+        </Link>
+
       </div>
     </div>
   );
