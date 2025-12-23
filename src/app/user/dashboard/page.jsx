@@ -85,7 +85,7 @@ export default function UserDashboard() {
           </h3>
           <p className="text-sm text-gray-600">
             Pantau status persetujuan pemesanan ruangan
-            dan lakukan pembatalan maksimal 24 jam sebelum
+            dan dapat melakukan pembatalan maksimal 24 jam sebelum
             waktu mulai.
           </p>
         </Link>
