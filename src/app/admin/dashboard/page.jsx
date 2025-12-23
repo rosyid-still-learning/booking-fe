@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
+import Link from "next/link";
 import { FiBell } from "react-icons/fi";
 
 export default function AdminDashboard() {
@@ -21,7 +22,7 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  // 🔄 FETCH NOTIF
+  // 🔔 FETCH NOTIF
   async function fetchNotifications() {
     try {
       const res = await api.get("/admin/notifications");
@@ -29,8 +30,7 @@ export default function AdminDashboard() {
         ? res.data
         : res.data?.data || [];
       setNotifications(data);
-    } catch (err) {
-      console.error("Gagal mengambil notifikasi");
+    } catch {
       setNotifications([]);
     }
   }
@@ -41,13 +41,12 @@ export default function AdminDashboard() {
       await api.post("/admin/notifications/clear");
       setNotifications([]);
       setOpen(false);
-    } catch {
-      console.error("Gagal clear notifikasi");
-    }
+    } catch {}
   }
 
   return (
     <div className="p-6 space-y-8">
+
       {/* HEADER */}
       <div className="flex justify-between items-start">
         <div>
@@ -67,7 +66,6 @@ export default function AdminDashboard() {
             className="relative p-2 rounded-full hover:bg-gray-100 transition"
           >
             <FiBell size={22} />
-
             {notifications.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-2 py-[1px] rounded-full">
                 {notifications.length}
@@ -75,7 +73,6 @@ export default function AdminDashboard() {
             )}
           </button>
 
-          {/* DROPDOWN */}
           {open && (
             <div className="absolute right-0 mt-3 w-80 bg-white border rounded-xl shadow-lg z-50 overflow-hidden">
               <div className="px-4 py-3 border-b font-semibold text-sm">
@@ -114,48 +111,62 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* INFO BOX */}
+      {/* INFO */}
       <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-5">
         <h2 className="font-semibold text-green-800 mb-1">
           Peran Administrator
         </h2>
         <p className="text-sm text-green-700">
-          Administrator bertanggung jawab dalam pengelolaan data
-          ruangan serta pengawasan proses pemesanan.
+          Administrator bertanggung jawab dalam pengelolaan data ruangan
+          serta pengawasan proses pemesanan.
         </p>
       </div>
 
-      {/* FEATURE SUMMARY */}
+      {/* QUICK ACTION */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+
+        <Link
+          href="/admin/rooms"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             🏢 Kelola Ruangan
           </h3>
           <p className="text-sm text-gray-600">
-            Menambah, mengubah, dan menghapus data ruangan
-            dengan mudah.
+            Menambah, mengubah, dan menghapus data ruangan dengan mudah.
           </p>
-        </div>
+        </Link>
 
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+        <Link
+          href="/admin/bookings"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             📋 Permintaan Booking
           </h3>
           <p className="text-sm text-gray-600">
-            Memproses permintaan booking serta melihat
-            riwayat pemesanan.
+            Memproses permintaan booking serta melihat riwayat pemesanan.
           </p>
-        </div>
+        </Link>
 
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
-          <h3 className="font-semibold mb-2 text-lg">
+        <Link
+          href="/admin/active-bookings"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
             📊 Ruangan Dibooking
           </h3>
           <p className="text-sm text-gray-600">
-            Monitoring ruangan yang sedang digunakan
-            secara real-time.
+            Monitoring ruangan yang sedang digunakan secara real-time.
           </p>
-        </div>
+        </Link>
+
       </div>
     </div>
   );
