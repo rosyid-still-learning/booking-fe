@@ -123,7 +123,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* QUICK ACTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
 
         <Link
           href="/admin/rooms"
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
             📋 Permintaan Booking
           </h3>
           <p className="text-sm text-gray-600">
-            Memproses permintaan booking serta melihat riwayat pemesanan.
+            Memproses permintaan booking ruangan yang masuk.
           </p>
         </Link>
 
@@ -164,6 +164,20 @@ export default function AdminDashboard() {
           </h3>
           <p className="text-sm text-gray-600">
             Monitoring ruangan yang sedang digunakan secara real-time.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/booking-history"
+          className="group rounded-xl border bg-white p-5 shadow-sm
+                     hover:shadow-md hover:border-blue-400
+                     transition cursor-pointer"
+        >
+          <h3 className="font-semibold mb-2 text-lg group-hover:text-blue-600">
+            🕒 Riwayat Booking
+          </h3>
+          <p className="text-sm text-gray-600">
+            Melihat seluruh riwayat pemesanan ruangan yang telah selesai.
           </p>
         </Link>
 
