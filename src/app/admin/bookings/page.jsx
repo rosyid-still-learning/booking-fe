@@ -29,6 +29,15 @@ export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 🔥 FIX PDF CLOUDINARY BIAR KE-OPEN, BUKAN DOWNLOAD
+function getViewableUrl(url) {
+  if (!url) return null;
+  return url.replace(
+    "/upload/",
+    "/upload/fl_attachment:false/"
+  );
+}
+
   async function fetchBookings() {
     try {
       const res = await api.get("/admin/bookings");
@@ -172,13 +181,13 @@ export default function AdminBookingsPage() {
               {/* 🔥 FIX UTAMA ADA DI SINI */}
               {b.attachment && (
   <a
-    href={b.attachment}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-blue-600 underline"
-  >
-    📎 Lihat File Pendukung
-  </a>
+  href={getViewableUrl(b.attachment)}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-blue-600 underline"
+>
+  📎 Lihat File Pendukung
+</a>
 )}
 
 
