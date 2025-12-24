@@ -178,17 +178,25 @@ function getViewableUrl(url) {
                 <p>🕒 {start.jam} – {end.jam}</p>
               </div>
 
-              {/* 🔥 FIX UTAMA ADA DI SINI */}
-              {b.attachment && (
-  <a
-  href={getViewableUrl(b.attachment)}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-blue-600 underline"
->
-  📎 Lihat File Pendukung
-</a>
+              {/* FILE PENDUKUNG */}
+{b.attachment && (
+  <div className="mt-3">
+    {b.attachment.toLowerCase().endsWith(".pdf") ? (
+      <iframe
+        src={b.attachment}
+        className="w-full h-[450px] border rounded"
+        title="File Pendukung PDF"
+      />
+    ) : (
+      <img
+        src={b.attachment}
+        alt="File Pendukung"
+        className="max-w-full border rounded"
+      />
+    )}
+  </div>
 )}
+
 
 
               <div className="flex gap-3 mt-5">
