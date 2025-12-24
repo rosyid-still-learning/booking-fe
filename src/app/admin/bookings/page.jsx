@@ -180,21 +180,16 @@ function getViewableUrl(url) {
 
               {/* FILE PENDUKUNG */}
 {b.attachment && (
-  <div className="mt-3">
-    {b.attachment.toLowerCase().endsWith(".pdf") ? (
-      <iframe
-        src={b.attachment}
-        className="w-full h-[450px] border rounded"
-        title="File Pendukung PDF"
-      />
-    ) : (
-      <img
-        src={b.attachment}
-        alt="File Pendukung"
-        className="max-w-full border rounded"
-      />
-    )}
-  </div>
+  <p className="mt-3">
+    <a
+      href={b.attachment}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline font-medium"
+    >
+      📎 Lihat File Pendukung
+    </a>
+  </p>
 )}
 
 
