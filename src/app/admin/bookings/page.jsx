@@ -170,18 +170,17 @@ export default function AdminBookingsPage() {
               </div>
 
               {/* 🔥 FIX UTAMA ADA DI SINI */}
-              {b.attachment_url && (
-                <p className="mt-3">
-                  <a
-                    href={b.attachment_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    📎 Lihat File Pendukung
-                  </a>
-                </p>
-              )}
+              {b.attachment && (
+  <a
+    href={b.attachment}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-blue-600 underline"
+  >
+    📎 Lihat File Pendukung
+  </a>
+)}
+
 
               <div className="flex gap-3 mt-5">
                 <button
