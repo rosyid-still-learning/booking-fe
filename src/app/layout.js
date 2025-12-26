@@ -27,6 +27,11 @@ export const metadata = {
     locale: "id_ID",
     type: "website",
   },
+
+  // 🔥 INI YANG KURANG (WAJIB)
+  verification: {
+    google: "VrJmauicxLCajJmafxpDaSNuGWZduXo-_0wiwNCacOk",
+  },
 };
 
 export default function RootLayout({ children }) {
