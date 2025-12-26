@@ -127,7 +127,6 @@ export default function BookingPage() {
         {/* JUDUL */}
         <label className="block mb-2 font-medium">
           Judul Kegiatan <span className="text-red-500">*</span>
-          
         </label>
         <input
           value={title}
@@ -193,6 +192,10 @@ export default function BookingPage() {
           File Pendukung (KTM / Surat Resmi Peminjaman Ruangan){" "}
           <span className="text-red-500">*</span>
         </label>
+
+        <p className="text-sm text-gray-500 mb-2">
+          Format file yang diperbolehkan: JPG, JPEG, PNG, atau PDF (maks. 2 MB)
+        </p>
 
         <label
           htmlFor="attachment"
