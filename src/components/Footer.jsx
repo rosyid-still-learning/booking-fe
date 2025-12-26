@@ -1,15 +1,42 @@
-export default function Footer() {
+"use client";
+
+import { usePathname } from "next/navigation";
+import useAuthStore from "@/store/authStore";
+import dayjs from "dayjs";
+
+export default function Header({ children }) {
+  const pathname = usePathname();
+  const { user } = useAuthStore();
+
   return (
-    <footer className="bg-slate-100 text-gray-600 text-sm text-center py-4 mt-10">
-      <p>
-        © {new Date().getFullYear()}{" "}
-        <span className="font-semibold text-gray-800">
-          Ganesha Booking
-        </span>
-      </p>
-      <p className="mt-1">
-        Sistem Peminjaman Ruangan Kampus
-      </p>
-    </footer>
+    <header className="h-14 bg-white border-b flex items-center justify-between px-6">
+      
+      {/* LEFT - HAMBURGER (MOBILE) + BRAND */}
+      <div className="flex items-center gap-3">
+        {children} {/* ⬅️ tetap, jangan dihapus */}
+
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm font-semibold text-gray-800">
+            Ganesha Booking
+          </span>
+          <span className="text-xs text-gray-500">
+            Sistem Peminjaman Ruang Kampus
+          </span>
+        </div>
+      </div>
+
+      {/* RIGHT - USER INFO */}
+      <div className="text-right leading-tight">
+        <p className="text-sm font-medium text-gray-800">
+          {user?.name}
+        </p>
+        <p className="text-xs text-gray-500 capitalize">
+          {user?.role}
+        </p>
+        <p className="text-xs text-gray-400">
+          {dayjs().format("dddd, DD MMM YYYY")}
+        </p>
+      </div>
+    </header>
   );
 }
