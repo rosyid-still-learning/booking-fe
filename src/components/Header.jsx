@@ -8,20 +8,21 @@ export default function Header({ children }) {
   const pathname = usePathname();
   const { user } = useAuthStore();
 
-  const breadcrumbs = pathname
-    .split("/")
-    .filter(Boolean)
-    .map((item) =>
-      item.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())
-    );
-
   return (
     <header className="h-14 bg-white border-b flex items-center justify-between px-6">
       
-      {/* LEFT - HAMBURGER (MOBILE) + BREADCRUMB */}
-      <div className="flex items-center gap-3 text-sm text-gray-600">
-        {children} {/* ⬅️ INI KUNCI UTAMA */}
-        <span>{breadcrumbs.join(" / ")}</span>
+      {/* LEFT - HAMBURGER (MOBILE) + BRAND */}
+      <div className="flex items-center gap-3">
+        {children} {/* ⬅️ tetap, jangan dihapus */}
+
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm font-semibold text-gray-800">
+            Ganesha Booking
+          </span>
+          <span className="text-xs text-gray-500">
+            Sistem Peminjaman Ruang Kampus
+          </span>
+        </div>
       </div>
 
       {/* RIGHT - USER INFO */}
