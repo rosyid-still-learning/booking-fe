@@ -190,10 +190,7 @@ export default function CreateRoomPage() {
             />
           </div>
 
-          {/* KETERANGAN */}
-          <p className="text-xs text-gray-500">
-            <span className="text-red-500">*</span> wajib diisi
-          </p>
+        
 
           {/* BUTTON */}
           <button
