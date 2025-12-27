@@ -34,18 +34,18 @@ export default function CreateRoomPage() {
     setLoading(true);
 
     try {
-      // 🔥 Upload ke Cloudinary
+      // Upload ke Cloudinary
       const imageUrl = await uploadToCloudinary(image);
 
-      // 🔥 Kirim ke Backend
+      // Kirim ke backend
       await api.post("/admin/rooms", {
         name,
         location,
         capacity: Number(capacity),
         facilities: facilities.split(",").map((f) => f.trim()),
-        category, // STRING: kampus_tengah, dll
+        category,
         description,
-        image: imageUrl, // URL Cloudinary
+        image: imageUrl,
       });
 
       toast.success("Ruangan berhasil ditambahkan");
@@ -97,7 +97,9 @@ export default function CreateRoomPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* NAMA */}
           <div>
-            <label className="font-semibold">Nama Ruangan</label>
+            <label className="font-semibold">
+              Nama Ruangan <span className="text-red-500">*</span>
+            </label>
             <input
               className="w-full border p-2 rounded"
               value={name}
@@ -108,7 +110,9 @@ export default function CreateRoomPage() {
 
           {/* LOKASI */}
           <div>
-            <label className="font-semibold">Lokasi</label>
+            <label className="font-semibold">
+              Lokasi <span className="text-red-500">*</span>
+            </label>
             <input
               className="w-full border p-2 rounded"
               value={location}
@@ -119,7 +123,9 @@ export default function CreateRoomPage() {
 
           {/* KAPASITAS */}
           <div>
-            <label className="font-semibold">Kapasitas</label>
+            <label className="font-semibold">
+              Kapasitas <span className="text-red-500">*</span>
+            </label>
             <input
               type="number"
               className="w-full border p-2 rounded"
@@ -131,7 +137,9 @@ export default function CreateRoomPage() {
 
           {/* FASILITAS */}
           <div>
-            <label className="font-semibold">Fasilitas</label>
+            <label className="font-semibold">
+              Fasilitas <span className="text-red-500">*</span>
+            </label>
             <input
               className="w-full border p-2 rounded"
               value={facilities}
@@ -141,9 +149,11 @@ export default function CreateRoomPage() {
             />
           </div>
 
-          {/* ✅ KATEGORI (FIX DI SINI) */}
+          {/* KATEGORI */}
           <div>
-            <label className="font-semibold">Kategori Kampus</label>
+            <label className="font-semibold">
+              Kategori Kampus <span className="text-red-500">*</span>
+            </label>
             <select
               className="w-full border p-2 rounded"
               value={category}
@@ -158,7 +168,7 @@ export default function CreateRoomPage() {
             </select>
           </div>
 
-          {/* DESKRIPSI */}
+          {/* DESKRIPSI (OPSIONAL) */}
           <div>
             <label className="font-semibold">Deskripsi</label>
             <textarea
@@ -170,13 +180,20 @@ export default function CreateRoomPage() {
 
           {/* FOTO */}
           <div>
-            <label className="font-semibold mb-2 block">Foto Ruangan</label>
+            <label className="font-semibold mb-2 block">
+              Foto Ruangan <span className="text-red-500">*</span>
+            </label>
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setImage(e.target.files?.[0] || null)}
             />
           </div>
+
+          {/* KETERANGAN */}
+          <p className="text-xs text-gray-500">
+            <span className="text-red-500">*</span> wajib diisi
+          </p>
 
           {/* BUTTON */}
           <button
