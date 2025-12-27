@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { FiArrowLeft, FiMail, FiLock, FiUser } from "react-icons/fi";
-import axios from "@/lib/axios"; // sesuaikan path axios kamu
+import axios from "@/lib/axios";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -17,24 +17,36 @@ export default function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // ✅ VALIDASI FRONTEND (BIAR JELAS)
+    if (password.length < 8) {
+      toast.error("Password minimal 8 karakter");
+      return;
+    }
+
     try {
       await axios.post("/register", {
         name,
         email,
         password,
-        // role TIDAK DIKIRIM
       });
 
       toast.success("Register berhasil, silakan login!");
       router.push("/login");
     } catch (error) {
-      toast.error("Email sudah terdaftar");
+      // ✅ AMBIL PESAN ERROR DARI BACKEND
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.email?.[0] ||
+        error?.response?.data?.errors?.password?.[0] ||
+        "Register gagal";
+
+      toast.error(message);
     }
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-50 to-indigo-100 relative">
-
+      
       {/* 🔙 KEMBALI */}
       <Link
         href="/"
@@ -56,7 +68,7 @@ export default function RegisterPage() {
           Buat akun baru
         </p>
 
-        {/* NAMA */}
+        {/* USERNAME */}
         <div className="mb-4">
           <label className="text-sm text-gray-600 mb-1 block">
             Username
@@ -101,7 +113,7 @@ export default function RegisterPage() {
             <FiLock className="text-gray-400" />
             <input
               type="password"
-              placeholder="••••••••"
+              placeholder="Minimal 8 karakter"
               className="w-full p-2 outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
