@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
@@ -16,66 +17,71 @@ export default function CreateRoomPage() {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ================= SUBMIT =================
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!image) {
-    toast.error("Foto ruangan wajib diisi");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    // 🔥 UPLOAD KE CLOUDINARY
-    const imageUrl = await uploadToCloudinary(image);
-
-    // 🔥 KIRIM JSON, BUKAN FORM DATA
-    await api.post("/admin/rooms", {
-      name,
-      location,
-      capacity: Number(capacity),
-      facilities: facilities.split(",").map(f => f.trim()),
-      category: category, // SESUAI EDIT
-      description,
-      image: imageUrl, // STRING URL
-    });
-
-    toast.success("Ruangan berhasil ditambahkan");
-    router.push("/admin/rooms");
-  } catch (err) {
-    console.error(err?.response?.data || err);
-    toast.error("Gagal menambah ruangan");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-const uploadToCloudinary = async (file) => {
-  const fd = new FormData();
-  fd.append("file", file);
-  fd.append("upload_preset", "rooms_unsigned");
-
-  const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dgkajfw1b/image/upload",
-    {
-      method: "POST",
-      body: fd,
+    if (!image) {
+      toast.error("Foto ruangan wajib diisi");
+      return;
     }
-  );
 
-  const data = await res.json();
+    if (!category) {
+      toast.error("Kategori kampus wajib dipilih");
+      return;
+    }
 
-  if (!data.secure_url) {
-    throw new Error("Upload gambar ke Cloudinary gagal");
-  }
+    setLoading(true);
 
-  return data.secure_url;
-};
+    try {
+      // 🔥 Upload ke Cloudinary
+      const imageUrl = await uploadToCloudinary(image);
 
+      // 🔥 Kirim ke Backend
+      await api.post("/admin/rooms", {
+        name,
+        location,
+        capacity: Number(capacity),
+        facilities: facilities.split(",").map((f) => f.trim()),
+        category, // STRING: kampus_tengah, dll
+        description,
+        image: imageUrl, // URL Cloudinary
+      });
 
+      toast.success("Ruangan berhasil ditambahkan");
+      router.push("/admin/rooms");
+    } catch (err) {
+      console.error(err?.response?.data || err);
+      toast.error("Gagal menambah ruangan");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // ================= CLOUDINARY =================
+  const uploadToCloudinary = async (file) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", "rooms_unsigned");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dgkajfw1b/image/upload",
+      {
+        method: "POST",
+        body: fd,
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.secure_url) {
+      throw new Error("Upload gambar ke Cloudinary gagal");
+    }
+
+    return data.secure_url;
+  };
+
+  // ================= RENDER =================
   return (
     <div className="p-6">
       <button
@@ -89,6 +95,7 @@ const uploadToCloudinary = async (file) => {
         <h1 className="text-2xl font-bold mb-6">Tambah Ruangan</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* NAMA */}
           <div>
             <label className="font-semibold">Nama Ruangan</label>
             <input
@@ -99,6 +106,7 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* LOKASI */}
           <div>
             <label className="font-semibold">Lokasi</label>
             <input
@@ -109,6 +117,7 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* KAPASITAS */}
           <div>
             <label className="font-semibold">Kapasitas</label>
             <input
@@ -120,6 +129,7 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* FASILITAS */}
           <div>
             <label className="font-semibold">Fasilitas</label>
             <input
@@ -131,23 +141,24 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* ✅ KATEGORI (FIX DI SINI) */}
           <div>
-            <label className="font-semibold">Kategori</label>
+            <label className="font-semibold">Kategori Kampus</label>
             <select
-  className="w-full border p-2 rounded"
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
-  required
->
-  <option value="">-- Pilih Kampus --</option>
-  <option value="1">Kampus Tengah</option>
-  <option value="2">Kampus Jineng Dalem</option>
-  <option value="3">Kampus Bawah</option>
-  <option value="4">Kampus Denpasar</option>
-</select>
-
+              className="w-full border p-2 rounded"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="">-- Pilih Kampus --</option>
+              <option value="kampus_tengah">Kampus Tengah</option>
+              <option value="kampus_jineng_dalem">Kampus Jineng Dalem</option>
+              <option value="kampus_bawah">Kampus Bawah</option>
+              <option value="kampus_denpasar">Kampus Denpasar</option>
+            </select>
           </div>
 
+          {/* DESKRIPSI */}
           <div>
             <label className="font-semibold">Deskripsi</label>
             <textarea
@@ -157,6 +168,7 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* FOTO */}
           <div>
             <label className="font-semibold mb-2 block">Foto Ruangan</label>
             <input
@@ -166,6 +178,7 @@ const uploadToCloudinary = async (file) => {
             />
           </div>
 
+          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
