@@ -20,7 +20,7 @@ export default function ActiveBookings() {
           Ruangan Sedang Dibooking
         </h1>
         <p className="text-sm text-gray-500 mt-1">
-          Informasi ruangan yang sedang digunakan saat ini
+          Informasi ruangan yang sedang dalam status dibooking
         </p>
       </div>
 
