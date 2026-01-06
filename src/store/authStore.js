@@ -9,7 +9,7 @@ const useAuthStore = create((set, get) => ({
     const res = await api.post("/login", { email, password });
 
     
-    const token = res.data.access_token; // 
+    const token = res.data.access_token; 
     const user = res.data.user;
 
     if (!token) {
