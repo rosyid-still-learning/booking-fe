@@ -8,8 +8,8 @@ const useAuthStore = create((set, get) => ({
   login: async (email, password) => {
     const res = await api.post("/login", { email, password });
 
-    // 🔴 FIX DI SINI
-    const token = res.data.access_token; // ✅ BENAR
+    
+    const token = res.data.access_token; // 
     const user = res.data.user;
 
     if (!token) {
